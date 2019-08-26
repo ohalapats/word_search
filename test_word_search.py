@@ -1,35 +1,41 @@
 """
 This module contains unit tests for word search solution
 """
+import pytest
+
 from word_search import get_valid_words, generate_grid, search_word
 
-FILE_NAME = 'words_dict.txt'
-WORDS = get_valid_words(FILE_NAME)
-GRID_SIZE = 15
+
+@pytest.yield_fixture
+def init_valid_words():
+    file_name = 'words_dict.txt'
+    words = get_valid_words(file_name)
+    yield words
 
 
-def test_valid_words_amount():
-    assert len(get_valid_words(FILE_NAME)) == 62798
+def test_valid_words_amount(init_valid_words):
+    assert len(init_valid_words) == 62798
 
 
-def test_grid_size():
-    grid = generate_grid(GRID_SIZE)
-    assert len(grid) == GRID_SIZE
+@pytest.mark.parametrize('grid_size', [i for i in range(2, 15)])
+def test_grid_size(grid_size):
+    grid = generate_grid(grid_size)
+    assert len(grid) == grid_size
     for line in grid:
-        assert len(line) == GRID_SIZE
+        assert len(line) == grid_size
 
 
-def test_word_search_1():
+def test_word_search_1(init_valid_words):
     grid = [['p', 'h', 'o'],
             ['j', 'e', 'y'],
             ['r', 'q', 't']]
 
     words = ['pet', 'ho', 'he', 'oh', 'eh', 'ye', 'yo', 're']
 
-    assert list(search_word(grid, WORDS)) == words
+    assert list(search_word(grid, init_valid_words)) == words
 
 
-def test_word_search_2():
+def test_word_search_2(init_valid_words):
     grid = [['a', 'b', 'c', 'l', 'y'],
             ['b', 'h', 'c', 'd', 'm'],
             ['c', 'g', 'd', 'i', 'a'],
@@ -39,10 +45,10 @@ def test_word_search_2():
     words = ['ah', 'ha', 'dim', 'ma', 'my', 'mi', 'mike', 'dim', 'id', 'id', 'aid', 'ax', 'am', 'am', 'ad',
              'id', 'id', 'kid', 'mi', 'mid', 'ma', 'me', 'meow', 'mi', 'mid', 'middy', 'em', 'ow', 'woe']
 
-    assert list(search_word(grid, WORDS)) == words
+    assert list(search_word(grid, init_valid_words)) == words
 
 
-def test_word_search_3():
+def test_word_search_3(init_valid_words):
     grid = [['o', 'd', 'p', 'p', 'x', 'w', 'c', 'p', 'w', 'j', 'z', 'i', 'd', 'y', 't'],
             ['j', 'n', 'x', 'g', 'p', 'x', 'w', 'c', 'a', 'i', 'q', 'j', 'k', 'n', 'r'],
             ['e', 'h', 'i', 'c', 'c', 'x', 'g', 'j', 'f', 'p', 'f', 'x', 'm', 'p', 'k'],
@@ -70,4 +76,4 @@ def test_word_search_3():
              'ow', 'owl', 'oak', 'of', 'off', 'oh', 'my', 'by', 'he', 'uh', 'uh', 'ye', 'ten', 'gap', 'go', 'do',
              'kc', 'rue', 'by']
 
-    assert list(search_word(grid, WORDS)) == words
+    assert list(search_word(grid, init_valid_words)) == words

@@ -12,9 +12,7 @@ To install pytest run _pip install -r requirements.txt_
 
 To run the tests, run the appropriate command below:
 
-Python 2.7: _py.test word_search_test.py_
-
-Python 3.4+: _pytest word_search_test.py_
+Python 3.4+: _pytest test_word_search.py_
 
 Common options:
 `-v `: enable verbose output
